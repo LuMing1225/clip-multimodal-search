@@ -1,0 +1,551 @@
+{
+  "generated_at": "2026-10-02 11:09:37",
+  "pytest": {
+    "pytest_exit_code": 0,
+    "pytest_passed": true
+  },
+  "metrics": {
+    "total_runs": 5,
+    "tool_call_accuracy": 1.0,
+    "task_completion_rate": 1.0,
+    "anaphora_recall": 1.0,
+    "anaphora_total": 2,
+    "anaphora_recalled": 2
+  },
+  "expected_tool_sequence": [
+    "IntentAgent.Extract_Features",
+    "IntentAgent.Write_Wiki",
+    "RetrieverAgent.Subscribe_Signal",
+    "RetrieverAgent.Read_Wiki",
+    "RetrieverAgent.vector_Search"
+  ],
+  "traces": [
+    {
+      "run_id": "eval_run_001",
+      "step_count": 5,
+      "steps": [
+        {
+          "seq": 1,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Extract_Features",
+          "input_summary": {
+            "text": "搭配我周一上传的那款蓝色沙发"
+          },
+          "output_summary": {
+            "preferences": {
+              "color": "蓝色",
+              "sentiment": "neutral",
+              "style": null,
+              "material": null,
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4176507,
+          "thread_id": 27816
+        },
+        {
+          "seq": 2,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Write_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_001",
+            "title": "用户偏好-None",
+            "metadata": {
+              "color": "蓝色",
+              "sentiment": "neutral",
+              "style": null,
+              "material": null,
+              "category": null
+            }
+          },
+          "output_summary": {
+            "wiki_id": 1
+          },
+          "timestamp": 1790910577.4200785,
+          "thread_id": 27816
+        },
+        {
+          "seq": 3,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Subscribe_Signal",
+          "input_summary": {
+            "consumer": "worker_u_eval_001",
+            "count": 10
+          },
+          "output_summary": {
+            "signal_count": 1
+          },
+          "timestamp": 1790910577.4212658,
+          "thread_id": 27816
+        },
+        {
+          "seq": 4,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Read_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_001",
+            "limit": 1
+          },
+          "output_summary": {
+            "doc_count": 1,
+            "metadata": {
+              "color": "蓝色",
+              "sentiment": "neutral",
+              "style": null,
+              "material": null,
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.422269,
+          "thread_id": 27816
+        },
+        {
+          "seq": 5,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.vector_Search",
+          "input_summary": {
+            "query": "蓝色",
+            "user_id": "u_eval_001",
+            "mode": "hybrid"
+          },
+          "output_summary": {
+            "result_count": 3
+          },
+          "timestamp": 1790910577.422269,
+          "thread_id": 27816
+        }
+      ],
+      "sample": {
+        "text": "搭配我周一上传的那款蓝色沙发",
+        "user_id": "u_eval_001",
+        "expected_features": [
+          "蓝色"
+        ]
+      },
+      "wall_ms": 4.17
+    },
+    {
+      "run_id": "eval_run_002",
+      "step_count": 5,
+      "steps": [
+        {
+          "seq": 1,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Extract_Features",
+          "input_summary": {
+            "text": "我喜欢北欧风蓝色布艺沙发"
+          },
+          "output_summary": {
+            "preferences": {
+              "style": "Nordic",
+              "color": "蓝色",
+              "material": "布艺",
+              "sentiment": "positive",
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.422269,
+          "thread_id": 27816
+        },
+        {
+          "seq": 2,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Write_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_002",
+            "title": "用户偏好-Nordic",
+            "metadata": {
+              "style": "Nordic",
+              "color": "蓝色",
+              "material": "布艺",
+              "sentiment": "positive",
+              "category": null
+            }
+          },
+          "output_summary": {
+            "wiki_id": 2
+          },
+          "timestamp": 1790910577.424278,
+          "thread_id": 27816
+        },
+        {
+          "seq": 3,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Subscribe_Signal",
+          "input_summary": {
+            "consumer": "worker_u_eval_002",
+            "count": 10
+          },
+          "output_summary": {
+            "signal_count": 1
+          },
+          "timestamp": 1790910577.4252708,
+          "thread_id": 27816
+        },
+        {
+          "seq": 4,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Read_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_002",
+            "limit": 1
+          },
+          "output_summary": {
+            "doc_count": 1,
+            "metadata": {
+              "style": "Nordic",
+              "color": "蓝色",
+              "material": "布艺",
+              "sentiment": "positive",
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4262702,
+          "thread_id": 27816
+        },
+        {
+          "seq": 5,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.vector_Search",
+          "input_summary": {
+            "query": "Nordic蓝色布艺",
+            "user_id": "u_eval_002",
+            "mode": "hybrid"
+          },
+          "output_summary": {
+            "result_count": 3
+          },
+          "timestamp": 1790910577.4262702,
+          "thread_id": 27816
+        }
+      ],
+      "sample": {
+        "text": "我喜欢北欧风蓝色布艺沙发",
+        "user_id": "u_eval_002",
+        "expected_features": [
+          "Nordic",
+          "蓝色",
+          "布艺"
+        ]
+      },
+      "wall_ms": 4.26
+    },
+    {
+      "run_id": "eval_run_003",
+      "step_count": 5,
+      "steps": [
+        {
+          "seq": 1,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Extract_Features",
+          "input_summary": {
+            "text": "再来一款复古红色皮革椅子"
+          },
+          "output_summary": {
+            "preferences": {
+              "style": "Vintage",
+              "color": "红色",
+              "material": "皮革",
+              "sentiment": "neutral",
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4262702,
+          "thread_id": 27816
+        },
+        {
+          "seq": 2,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Write_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_003",
+            "title": "用户偏好-Vintage",
+            "metadata": {
+              "style": "Vintage",
+              "color": "红色",
+              "material": "皮革",
+              "sentiment": "neutral",
+              "category": null
+            }
+          },
+          "output_summary": {
+            "wiki_id": 3
+          },
+          "timestamp": 1790910577.4282696,
+          "thread_id": 27816
+        },
+        {
+          "seq": 3,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Subscribe_Signal",
+          "input_summary": {
+            "consumer": "worker_u_eval_003",
+            "count": 10
+          },
+          "output_summary": {
+            "signal_count": 1
+          },
+          "timestamp": 1790910577.4292712,
+          "thread_id": 27816
+        },
+        {
+          "seq": 4,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Read_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_003",
+            "limit": 1
+          },
+          "output_summary": {
+            "doc_count": 1,
+            "metadata": {
+              "style": "Vintage",
+              "color": "红色",
+              "material": "皮革",
+              "sentiment": "neutral",
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4292712,
+          "thread_id": 27816
+        },
+        {
+          "seq": 5,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.vector_Search",
+          "input_summary": {
+            "query": "Vintage红色皮革",
+            "user_id": "u_eval_003",
+            "mode": "hybrid"
+          },
+          "output_summary": {
+            "result_count": 3
+          },
+          "timestamp": 1790910577.4292712,
+          "thread_id": 27816
+        }
+      ],
+      "sample": {
+        "text": "再来一款复古红色皮革椅子",
+        "user_id": "u_eval_003",
+        "expected_features": [
+          "复古",
+          "红色",
+          "皮革"
+        ]
+      },
+      "wall_ms": 3.42
+    },
+    {
+      "run_id": "eval_run_004",
+      "step_count": 5,
+      "steps": [
+        {
+          "seq": 1,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Extract_Features",
+          "input_summary": {
+            "text": "工业风黑色金属书架推荐"
+          },
+          "output_summary": {
+            "preferences": {
+              "style": "Industrial",
+              "color": "黑色",
+              "material": "金属",
+              "sentiment": "neutral",
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4292712,
+          "thread_id": 27816
+        },
+        {
+          "seq": 2,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Write_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_004",
+            "title": "用户偏好-Industrial",
+            "metadata": {
+              "style": "Industrial",
+              "color": "黑色",
+              "material": "金属",
+              "sentiment": "neutral",
+              "category": null
+            }
+          },
+          "output_summary": {
+            "wiki_id": 4
+          },
+          "timestamp": 1790910577.4317808,
+          "thread_id": 27816
+        },
+        {
+          "seq": 3,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Subscribe_Signal",
+          "input_summary": {
+            "consumer": "worker_u_eval_004",
+            "count": 10
+          },
+          "output_summary": {
+            "signal_count": 1
+          },
+          "timestamp": 1790910577.4327836,
+          "thread_id": 27816
+        },
+        {
+          "seq": 4,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Read_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_004",
+            "limit": 1
+          },
+          "output_summary": {
+            "doc_count": 1,
+            "metadata": {
+              "style": "Industrial",
+              "color": "黑色",
+              "material": "金属",
+              "sentiment": "neutral",
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4327836,
+          "thread_id": 27816
+        },
+        {
+          "seq": 5,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.vector_Search",
+          "input_summary": {
+            "query": "Industrial黑色金属",
+            "user_id": "u_eval_004",
+            "mode": "hybrid"
+          },
+          "output_summary": {
+            "result_count": 3
+          },
+          "timestamp": 1790910577.4327836,
+          "thread_id": 27816
+        }
+      ],
+      "sample": {
+        "text": "工业风黑色金属书架推荐",
+        "user_id": "u_eval_004",
+        "expected_features": [
+          "工业",
+          "黑色",
+          "金属"
+        ]
+      },
+      "wall_ms": 3.33
+    },
+    {
+      "run_id": "eval_run_005",
+      "step_count": 5,
+      "steps": [
+        {
+          "seq": 1,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Extract_Features",
+          "input_summary": {
+            "text": "搭配我上次看的那款白色塑料收纳盒"
+          },
+          "output_summary": {
+            "preferences": {
+              "color": "白色",
+              "material": "塑料",
+              "sentiment": "neutral",
+              "style": null,
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.43396,
+          "thread_id": 27816
+        },
+        {
+          "seq": 2,
+          "agent": "intent_agent",
+          "tool": "IntentAgent.Write_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_005",
+            "title": "用户偏好-None",
+            "metadata": {
+              "color": "白色",
+              "material": "塑料",
+              "sentiment": "neutral",
+              "style": null,
+              "category": null
+            }
+          },
+          "output_summary": {
+            "wiki_id": 5
+          },
+          "timestamp": 1790910577.4351034,
+          "thread_id": 27816
+        },
+        {
+          "seq": 3,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Subscribe_Signal",
+          "input_summary": {
+            "consumer": "worker_u_eval_005",
+            "count": 10
+          },
+          "output_summary": {
+            "signal_count": 1
+          },
+          "timestamp": 1790910577.436116,
+          "thread_id": 27816
+        },
+        {
+          "seq": 4,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.Read_Wiki",
+          "input_summary": {
+            "user_id": "u_eval_005",
+            "limit": 1
+          },
+          "output_summary": {
+            "doc_count": 1,
+            "metadata": {
+              "color": "白色",
+              "material": "塑料",
+              "sentiment": "neutral",
+              "style": null,
+              "category": null
+            }
+          },
+          "timestamp": 1790910577.4371076,
+          "thread_id": 27816
+        },
+        {
+          "seq": 5,
+          "agent": "retriever_agent",
+          "tool": "RetrieverAgent.vector_Search",
+          "input_summary": {
+            "query": "白色塑料",
+            "user_id": "u_eval_005",
+            "mode": "hybrid"
+          },
+          "output_summary": {
+            "result_count": 3
+          },
+          "timestamp": 1790910577.4371076,
+          "thread_id": 27816
+        }
+      ],
+      "sample": {
+        "text": "搭配我上次看的那款白色塑料收纳盒",
+        "user_id": "u_eval_005",
+        "expected_features": [
+          "白色",
+          "塑料"
+        ]
+      },
+      "wall_ms": 3.18
+    }
+  ]
+}

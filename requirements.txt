@@ -1,0 +1,37 @@
+# CLIP电商多模态检索系统 - Python依赖
+# Python 3.10
+
+# ===== 深度学习 =====
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+sentencepiece>=0.1.99
+
+# ===== 向量数据库 =====
+pymilvus[lite]>=2.4.0
+
+# ===== Web框架 =====
+fastapi>=0.100.0
+uvicorn[standard]>=0.23.0
+python-multipart>=0.0.6
+aiofiles>=23.0.0
+
+# ===== 存储（轻量演示版替代） =====
+fakeredis>=2.0.0
+redis>=5.0.0
+networkx>=3.1
+matplotlib>=3.7.0
+
+# ===== 工具库 =====
+numpy>=1.24.0
+pillow>=10.0.0
+requests>=2.31.0
+pydantic>=2.0.0
+tqdm>=4.65.0
+
+# ===== 语音（可选） =====
+faster-whisper>=0.10.0
+
+# ===== 测试 =====
+pytest>=7.4.0
+pytest-asyncio>=0.21.0

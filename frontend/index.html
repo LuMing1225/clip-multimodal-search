@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>CLIP电商多模态检索系统</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <!-- 图谱可视化库 CDN -->
+  <script src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+</head>
+<body>
+
+  <!-- ============ 顶部导航栏 ============ -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <div class="logo" id="sysLogo">
+        <!-- CSS 绘制的 Logo 图标 -->
+        <svg viewBox="0 0 40 40" width="38" height="38">
+          <defs>
+            <linearGradient id="lg" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#1677ff"/>
+              <stop offset="1" stop-color="#36cfff"/>
+            </linearGradient>
+          </defs>
+          <circle cx="20" cy="20" r="18" fill="none" stroke="url(#lg)" stroke-width="2.5"/>
+          <circle cx="14" cy="16" r="4" fill="#1677ff"/>
+          <rect x="20" y="22" width="10" height="8" rx="2" fill="#ff8a3d"/>
+          <path d="M8 30 Q20 22 32 30" stroke="#36cfff" stroke-width="2" fill="none"/>
+        </svg>
+      </div>
+      <div class="title-block">
+        <h1>CLIP电商多模态检索系统</h1>
+        <p class="subtitle">基于跨模态长期记忆图谱的智能推荐</p>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="health-status" id="healthStatus">
+        <span class="dot" id="healthDot"></span>
+        <span class="dot-text" id="healthText">正在检测后端…</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ 主体：左侧导航 + 右侧内容 ============ -->
+  <div class="layout">
+
+    <!-- 左侧导航 -->
+    <nav class="sidebar">
+      <ul class="nav-list">
+        <li class="nav-item active" data-page="search">
+          <span class="nav-icon">🔍</span><span>多模态检索</span>
+        </li>
+        <li class="nav-item" data-page="memory">
+          <span class="nav-icon">🧠</span><span>用户记忆中心</span>
+        </li>
+        <li class="nav-item" data-page="demo">
+          <span class="nav-icon">🤖</span><span>双Agent协同演示</span>
+        </li>
+        <li class="nav-item" data-page="stats">
+          <span class="nav-icon">📊</span><span>系统状态</span>
+        </li>
+        <li class="nav-item" data-page="arch">
+          <span class="nav-icon">🏗️</span><span>架构总览</span>
+        </li>
+      </ul>
+      <div class="sidebar-footer">
+        <div class="tech-mini">Chinese-CLIP · Milvus · Neo4j</div>
+      </div>
+    </nav>
+
+    <!-- 右侧内容区 -->
+    <main class="content">
+
+      <!-- ========== 页面一：多模态检索 ========== -->
+      <section class="page active" id="page-search">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>🔍 多模态检索</h2>
+            <p class="panel-desc">支持文本 / 图片 / 语音输入，CLIP 跨模态对齐 + 图谱偏好混合评分</p>
+          </div>
+
+          <!-- 用户ID -->
+          <div class="row-inline user-row">
+            <label class="field-label">用户ID</label>
+            <input type="text" id="searchUserId" class="input" value="user_001" />
+          </div>
+
+          <!-- 搜索输入区 -->
+          <div class="search-box">
+            <textarea id="searchQuery" class="search-input" rows="2"
+              placeholder="输入商品描述，如: 北欧风蓝色布艺沙发"></textarea>
+
+            <!-- 图片上传拖拽区 -->
+            <div class="upload-row">
+              <div class="dropzone" id="imageDrop">
+                <input type="file" id="imageInput" accept="image/*" hidden />
+                <span class="dz-icon">🖼️</span>
+                <span class="dz-text">点击 / 拖拽上传参考图</span>
+                <div class="thumb" id="imageThumb" hidden>
+                  <img id="imageThumbImg" alt="预览" />
+                  <button class="thumb-remove" id="imageRemove" title="移除">×</button>
+                </div>
+              </div>
+              <div class="dropzone voice" id="voiceDrop">
+                <input type="file" id="voiceInput" accept="audio/*" hidden />
+                <span class="dz-icon">🎤</span>
+                <span class="dz-text">点击上传语音(自动转文本)</span>
+                <span class="dz-filename" id="voiceName"></span>
+              </div>
+            </div>
+
+            <!-- 控制条 -->
+            <div class="control-bar">
+              <div class="mode-switch">
+                <label class="mode-opt">
+                  <input type="radio" name="searchMode" value="text" /> 纯文本检索
+                </label>
+                <label class="mode-opt checked">
+                  <input type="radio" name="searchMode" value="hybrid" checked /> 混合检索 (CLIP+图谱)
+                </label>
+              </div>
+
+              <div class="slider-group">
+                <label class="field-label">λ 权重 <b id="lambdaVal">0.7</b></label>
+                <input type="range" id="lambdaSlider" min="0.1" max="1.0" step="0.1" value="0.7" />
+              </div>
+
+              <div class="topk-group">
+                <label class="field-label">Top-K</label>
+                <select id="topkSelect" class="input small">
+                  <option value="5">5</option>
+                  <option value="10" selected>10</option>
+                  <option value="20">20</option>
+                </select>
+              </div>
+
+              <button class="btn primary" id="searchBtn">🚀 开始检索</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 结果区 -->
+        <div class="panel">
+          <div class="result-meta" id="resultMeta" hidden>
+            <span class="meta-chip">耗时 <b id="resultLatency">-</b> ms</span>
+            <span class="meta-chip">命中 <b id="resultCount">-</b> 件商品</span>
+          </div>
+          <div class="state-box" id="searchEmpty">
+            <div class="state-icon">🛒</div>
+            <p>输入条件后点击「开始检索」，结果将展示在这里</p>
+          </div>
+          <div class="state-box loading" id="searchLoading" hidden>
+            <div class="spinner"></div><p>CLIP 编码 + 图谱匹配中…</p>
+          </div>
+          <div class="state-box error" id="searchError" hidden></div>
+          <div class="product-grid" id="productGrid"></div>
+        </div>
+      </section>
+
+      <!-- ========== 页面二：用户记忆中心 ========== -->
+      <section class="page" id="page-memory">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>🧠 用户记忆中心</h2>
+            <p class="panel-desc">Chat Memory(Redis) · LLM-Wiki(PostgreSQL) · Knowledge-Graph(Neo4j)</p>
+          </div>
+          <div class="row-inline memory-head-row">
+            <label class="field-label">用户ID</label>
+            <input type="text" id="memoryUserId" class="input" value="user_001" />
+            <button class="btn primary" id="memoryQueryBtn">查询记忆</button>
+            <button class="btn danger" id="memoryClearBtn">🗑 清除该用户记忆</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="tabs" id="memoryTabs">
+            <button class="tab active" data-tab="chat">💬 Chat Memory</button>
+            <button class="tab" data-tab="wiki">📄 LLM-Wiki</button>
+            <button class="tab" data-tab="graph">🕸 Knowledge-Graph</button>
+          </div>
+
+          <div class="state-box loading" id="memoryLoading" hidden>
+            <div class="spinner"></div><p>读取共享记忆中心…</p>
+          </div>
+          <div class="state-box error" id="memoryError" hidden></div>
+
+          <!-- Chat Memory -->
+          <div class="tab-pane active" id="tab-chat">
+            <div class="chat-list" id="chatList"></div>
+          </div>
+          <!-- Wiki -->
+          <div class="tab-pane" id="tab-wiki">
+            <div class="wiki-layout">
+              <div class="wiki-list" id="wikiList"></div>
+              <div class="wiki-viewer" id="wikiViewer">
+                <p class="muted">从左侧选择一篇 Wiki 文档查看内容</p>
+              </div>
+            </div>
+          </div>
+          <!-- Graph -->
+          <div class="tab-pane" id="tab-graph">
+            <div class="graph-legend" id="graphLegend"></div>
+            <div class="graph-canvas-wrap" id="graphCanvas"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ========== 页面三：双Agent协同演示 ========== -->
+      <section class="page" id="page-demo">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>🤖 双Agent协同演示</h2>
+            <p class="panel-desc">意图分析 Agent 写入共享记忆 → 检索实现 Agent 订阅信号并跨模态召回</p>
+          </div>
+          <div class="row-inline">
+            <label class="field-label">用户ID</label>
+            <input type="text" id="demoUserId" class="input small" value="user_001" />
+            <button class="btn primary" id="demoFullBtn">⚡ 一键完整演示</button>
+            <button class="btn ghost" id="demoResetBtn">重置</button>
+          </div>
+        </div>
+
+        <!-- 步骤1+2: 意图分析 -->
+        <div class="panel">
+          <div class="step-head"><span class="step-no">1</span> 初始输入 → 意图分析Agent</div>
+          <div class="row-inline">
+            <input type="text" id="demoInitial" class="input grow"
+              value="我喜欢这款北欧风蓝色布艺沙发，温馨的感觉" />
+            <button class="btn primary" id="demoAnalyzeBtn">执行意图分析</button>
+          </div>
+          <div class="trajectory" id="analyzeTrajectory"></div>
+        </div>
+
+        <!-- 步骤3+4: 检索 -->
+        <div class="panel">
+          <div class="step-head"><span class="step-no">2</span> 后续查询 → 检索实现Agent</div>
+          <div class="row-inline">
+            <input type="text" id="demoFollowup" class="input grow"
+              value="帮我推荐几款适合这款沙发的茶几" />
+            <button class="btn primary" id="demoSearchBtn">执行记忆增强检索</button>
+          </div>
+          <div class="trajectory" id="retrieveTrajectory"></div>
+        </div>
+
+        <!-- 步骤5: 结果 -->
+        <div class="panel">
+          <div class="step-head"><span class="step-no">3</span> 最终推荐结果 <span class="tag memory-tag">基于记忆推荐</span></div>
+          <div class="product-grid" id="demoGrid"></div>
+        </div>
+      </section>
+
+      <!-- ========== 页面四：系统状态 ========== -->
+      <section class="page" id="page-stats">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>📊 系统状态</h2>
+            <p class="panel-desc" id="statsTime">每 5 秒自动刷新</p>
+          </div>
+          <div class="state-box loading" id="statsLoading">
+            <div class="spinner"></div><p>拉取后端指标…</p>
+          </div>
+          <div class="state-box error" id="statsError" hidden></div>
+          <div class="stat-grid" id="statGrid"></div>
+        </div>
+      </section>
+
+      <!-- ========== 页面五：架构总览 ========== -->
+      <section class="page" id="page-arch">
+        <div class="panel">
+          <div class="panel-head">
+            <h2>🏗️ 系统架构总览</h2>
+            <p class="panel-desc">跨模态输入 → 双Agent → 共享记忆中心 → CLIP向量检索 → 前端展示</p>
+          </div>
+          <div class="arch-diagram" id="archDiagram"></div>
+
+          <div class="tech-stack">
+            <h3>技术栈</h3>
+            <div class="chip-row">
+              <span class="chip">FastAPI</span><span class="chip">Chinese-CLIP</span>
+              <span class="chip">Milvus Lite</span><span class="chip">Redis</span>
+              <span class="chip">PostgreSQL</span><span class="chip">Neo4j</span>
+              <span class="chip">Ollama</span><span class="chip">Whisper</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- 全局 Toast -->
+  <div class="toast" id="toast"></div>
+
+  <!-- 脚本（注意顺序） -->
+  <script src="js/api.js"></script>
+  <script src="js/graph.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/search.js"></script>
+  <script src="js/memory.js"></script>
+  <script src="js/demo.js"></script>
+</body>
+</html>
